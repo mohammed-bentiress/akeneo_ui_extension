@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iframe Content</title>
+</head>
+<body>
+    <h2>This is the content inside the iframe</h2>
+    <script>
+        // Listen for messages from the parent window
+        window.addEventListener('message', (event) => {
+            console.log('Received message:', event.data);
+
+            // Handle the context and user details
+            if (event.data.context) {
+                console.log('Context:', event.data.context);
+                console.log('User:', event.data.user);
+            }
+        }, false);
+
+        // Request the PIM data when iframe loads
+        window.parent.postMessage({
+            type: 'request_context'
+        }, "*");
+    </script>
+</body>
+</html>
