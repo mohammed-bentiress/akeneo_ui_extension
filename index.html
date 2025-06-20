@@ -3,38 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iframe Test</title>
+    <title>Parent Page</title>
 </head>
 <body>
-    <h1>Iframe Test Page</h1>
-    <iframe src="iframe-content.html" id="myIframe" width="600" height="400"></iframe>
-    <script>
-        const iframe = document.getElementById('myIframe');
-
-        // Mock a response from the PIM system
-        window.addEventListener('message', (event) => {
-            if (event.data.type === 'request_context') {
-                iframe.contentWindow.postMessage({
-                    data: {
-                        productUuids: [
-                            "63139bf3-a7f7-4eaa-ba5e-6ffc8a2f14e9",
-                            "6fa3bd36-6b5a-4e80-afcd-c224fdf6f3ea",
-                            "78f38e4a-8d25-41e1-8e09-42a9c246689a"
-                        ],
-                        productModelCodes: []
-                    },
-                    context: {
-                        locale: "en_US",
-                        channel: "ecommerce"
-                    },
-                    user: {
-                        uuid: "4ebad9a4-7728-4d90-9db0-9e5a5c6a4d45",
-                        username: "admin",
-                        groups: ["IT support", "All"]
-                    }
-                }, "*");
-            }
-        }, false);
-    </script>
+    <h1>Parent Page</h1>
+    <iframe src="iframe-content.html" width="600" height="400"></iframe>
 </body>
 </html>

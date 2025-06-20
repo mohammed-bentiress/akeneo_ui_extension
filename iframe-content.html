@@ -1,28 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iframe Content</title>
 </head>
+
 <body>
-    <h2>This is the content inside the iframe</h2>
+    <h2>This is the content inside niji iframe</h2>
+    <div id="output"></div>
+
     <script>
-        // Listen for messages from the parent window
+        // Function to display data inside the iframe
+        function displayData(data) {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = `
+            <h3>Product UUIDs:</h3>
+            <ul>${data.productUuids.map(uuid => `<li>${uuid}</li>`).join('')}</ul>
+            <h3>Product Model Codes:</h3>
+            <ul>${data.productModelCodes.map(code => `<li>${code}</li>`).join('')}</ul>
+            <h3>Context:</h3>
+            <p>Locale: ${data.context.locale}</p>
+            <p>Channel: ${data.context.channel}</p>
+            <h3>User:</h3>
+            <p>Username: ${data.user.username}</p>
+            <p>Groups: ${data.user.groups.join(', ')}</p>
+        `;
+        }
+
+        // Listen for messages from Akeneo
         window.addEventListener('message', (event) => {
-            console.log('Received message:', event.data);
+            console.log('Received message:', event);
 
-            // Handle the context and user details
-            if (event.data.context) {
-                console.log('Context:', event.data.context);
-                console.log('User:', event.data.user);
+            if (event.data.data) {
+                console.log('Data received:', event.data);
+                displayData(event.data);
+            } else {
+                console.warn('No data field found in message:', event.data);
             }
-        }, false);
 
-        // Request the PIM data when iframe loads
+            if (event.data.type === 'JWT_TOKEN') {
+                console.log('Received JWT:', event.data.token);
+                // Validate and use the token if necessary
+            }
+        });
+
+        // Request for context once the iframe loads
         window.parent.postMessage({
             type: 'request_context'
         }, "*");
+
+        // Optionally request JWT
+        // window.parent.postMessage({
+        //     type: 'request_jwt'
+        // }, "*");
     </script>
 </body>
+
 </html>
